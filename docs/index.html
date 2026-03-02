@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🐾 BUILDFAST Command Center</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0a0a0f;--card:#12121a;--border:#1e1e2e;--text:#e0e0e0;--dim:#666;--ok:#22c55e;--err:#ef4444;--warn:#f59e0b;--run:#3b82f6;--off:#555;--accent:#a78bfa}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;min-height:100vh}
+/* Password gate */
+#gate{display:flex;align-items:center;justify-content:center;height:100vh;flex-direction:column;gap:16px}
+#gate h1{font-size:2rem;color:var(--accent)}
+#gate input{background:var(--card);border:1px solid var(--border);color:var(--text);padding:12px 20px;border-radius:8px;font-size:1rem;width:300px;text-align:center;outline:none}
+#gate input:focus{border-color:var(--accent)}
+#gate .err{color:var(--err);font-size:.85rem;min-height:20px}
+#gate button{background:var(--accent);color:#000;border:none;padding:10px 32px;border-radius:8px;font-size:1rem;cursor:pointer;font-weight:600}
+/* Dashboard */
+#app{display:none;padding:20px;max-width:1400px;margin:0 auto}
+header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;flex-wrap:wrap;gap:12px}
+header h1{font-size:1.5rem;color:var(--accent)}
+.meta{color:var(--dim);font-size:.85rem}
+.stats{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px}
+.stat{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px 20px;min-width:140px;text-align:center}
+.stat .num{font-size:1.8rem;font-weight:700}
+.stat .label{font-size:.75rem;color:var(--dim);text-transform:uppercase;letter-spacing:.5px;margin-top:4px}
+.stat.ok .num{color:var(--ok)}.stat.err .num{color:var(--err)}.stat.warn .num{color:var(--warn)}.stat.run .num{color:var(--run)}
+.filters{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.filters button{background:var(--card);border:1px solid var(--border);color:var(--text);padding:6px 14px;border-radius:6px;cursor:pointer;font-size:.8rem;transition:all .15s}
+.filters button:hover,.filters button.active{background:var(--accent);color:#000;border-color:var(--accent)}
+.search{background:var(--card);border:1px solid var(--border);color:var(--text);padding:8px 14px;border-radius:6px;font-size:.85rem;width:250px;outline:none;margin-bottom:16px}
+.search:focus{border-color:var(--accent)}
+table{width:100%;border-collapse:collapse;font-size:.85rem}
+thead th{text-align:left;padding:10px 12px;border-bottom:2px solid var(--border);color:var(--dim);font-size:.75rem;text-transform:uppercase;letter-spacing:.5px;cursor:pointer;user-select:none;white-space:nowrap}
+thead th:hover{color:var(--text)}
+tbody tr{border-bottom:1px solid var(--border);transition:background .1s}
+tbody tr:hover{background:#1a1a2a}
+td{padding:10px 12px;vertical-align:middle}
+.status-dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px}
+.dot-ok{background:var(--ok)}.dot-error{background:var(--err)}.dot-failing{background:var(--err);animation:pulse 1s infinite}
+.dot-running{background:var(--run);animation:pulse 1s infinite}.dot-disabled{background:var(--off)}.dot-unknown{background:var(--dim)}
+.dot-warn{background:var(--warn)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:.7rem;font-weight:600}
+.badge-main{background:#2d1b69;color:var(--accent)}.badge-isolated{background:#1b3a1b;color:var(--ok)}
+.duration{color:var(--dim);font-variant-numeric:tabular-nums}
+.schedule{font-family:'SF Mono',Monaco,monospace;font-size:.75rem;color:var(--dim)}
+.error-text{color:var(--err);font-size:.75rem;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.time-ago{white-space:nowrap}
+.time-ago.stale{color:var(--warn)}
+.time-ago.very-stale{color:var(--err)}
+.logout{background:none;border:1px solid var(--border);color:var(--dim);padding:4px 12px;border-radius:6px;cursor:pointer;font-size:.75rem}
+.logout:hover{color:var(--text);border-color:var(--text)}
+.refresh-btn{background:var(--card);border:1px solid var(--border);color:var(--text);padding:6px 14px;border-radius:6px;cursor:pointer;font-size:.8rem}
+.refresh-btn:hover{border-color:var(--accent)}
+</style>
+</head>
+<body>
+
+<div id="gate">
+  <h1>🐾 BUILDFAST</h1>
+  <p style="color:var(--dim)">Command Center</p>
+  <input type="password" id="pw" placeholder="Password" autofocus>
+  <div class="err" id="pw-err"></div>
+  <button onclick="tryLogin()">Enter</button>
+</div>
+
+<div id="app">
+  <header>
+    <div>
+      <h1>🐾 BUILDFAST Command Center</h1>
+      <div class="meta">Last updated: <span id="updated">—</span> · <span id="total-jobs">0</span> jobs</div>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <button class="refresh-btn" onclick="loadData()">↻ Refresh</button>
+      <button class="logout" onclick="logout()">Logout</button>
+    </div>
+  </header>
+
+  <div class="stats" id="stats"></div>
+
+  <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+    <input class="search" type="text" id="search" placeholder="Search jobs..." oninput="render()">
+    <div class="filters" id="filters"></div>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th onclick="sortBy('status')">Status</th>
+        <th onclick="sortBy('name')">Job Name</th>
+        <th onclick="sortBy('schedule')">Schedule</th>
+        <th onclick="sortBy('sessionTarget')">Type</th>
+        <th onclick="sortBy('lastRunAt')">Last Run</th>
+        <th onclick="sortBy('lastDuration')">Duration</th>
+        <th onclick="sortBy('nextRunAt')">Next Run</th>
+        <th onclick="sortBy('consecutiveErrors')">Errors</th>
+      </tr>
+    </thead>
+    <tbody id="tbody"></tbody>
+  </table>
+</div>
+
+<script>
+// Password: SHA-256 hash of the password. Change this hash to change the password.
+// Default: "buildfast2026" → update the hash below
+const PW_HASH = "11d29e8ec358e63271e434576976edbb39a457673b01906472a99ba47d0657dc";
+
+let jobs = [];
+let currentFilter = "all";
+let currentSort = { key: "nextRunAt", asc: true };
+
+// Simple hash check (client-side only — keeps casual visitors out, not Fort Knox)
+async function sha256(str) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+
+async function tryLogin() {
+  const pw = document.getElementById('pw').value;
+  const hash = await sha256(pw);
+  // Accept if hash matches OR if placeholder hasn't been set (dev mode)
+  if (hash === PW_HASH || PW_HASH.includes('PLACEHOLDER')) {
+    sessionStorage.setItem('bf_auth', '1');
+    showApp();
+  } else {
+    document.getElementById('pw-err').textContent = 'Wrong password';
+    document.getElementById('pw').value = '';
+  }
+}
+
+document.getElementById('pw').addEventListener('keydown', e => { if(e.key==='Enter') tryLogin(); });
+
+function logout() {
+  sessionStorage.removeItem('bf_auth');
+  location.reload();
+}
+
+function showApp() {
+  document.getElementById('gate').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  loadData();
+}
+
+if (sessionStorage.getItem('bf_auth')) showApp();
+
+async function loadData() {
+  try {
+    const res = await fetch('data.json?t=' + Date.now());
+    const data = await res.json();
+    jobs = data.jobs || [];
+    document.getElementById('updated').textContent = timeAgo(data.generated_at);
+    document.getElementById('total-jobs').textContent = data.total;
+    renderStats();
+    renderFilters();
+    render();
+  } catch(e) {
+    document.getElementById('tbody').innerHTML = '<tr><td colspan="8" style="text-align:center;padding:40px;color:var(--err)">Failed to load data. Run generate-data.sh first.</td></tr>';
+  }
+}
+
+function renderStats() {
+  const ok = jobs.filter(j => j.status === 'ok').length;
+  const err = jobs.filter(j => j.status === 'error' || j.status === 'failing').length;
+  const running = jobs.filter(j => j.status === 'running').length;
+  const disabled = jobs.filter(j => !j.enabled).length;
+  const stale = jobs.filter(j => j.enabled && j.lastRunAt && (Date.now() - j.lastRunAt > 86400000 * 2)).length;
+
+  document.getElementById('stats').innerHTML = `
+    <div class="stat ok"><div class="num">${ok}</div><div class="label">Healthy</div></div>
+    <div class="stat err"><div class="num">${err}</div><div class="label">Errors</div></div>
+    <div class="stat run"><div class="num">${running}</div><div class="label">Running</div></div>
+    <div class="stat warn"><div class="num">${stale}</div><div class="label">Stale (48h+)</div></div>
+    <div class="stat"><div class="num" style="color:var(--off)">${disabled}</div><div class="label">Disabled</div></div>
+  `;
+}
+
+function renderFilters() {
+  const filters = ['all','ok','error','failing','running','stale','disabled'];
+  document.getElementById('filters').innerHTML = filters.map(f =>
+    `<button class="${f===currentFilter?'active':''}" onclick="setFilter('${f}')">${f}</button>`
+  ).join('');
+}
+
+function setFilter(f) { currentFilter = f; renderFilters(); render(); }
+
+function sortBy(key) {
+  if (currentSort.key === key) currentSort.asc = !currentSort.asc;
+  else { currentSort.key = key; currentSort.asc = true; }
+  render();
+}
+
+function render() {
+  const q = document.getElementById('search').value.toLowerCase();
+  let filtered = jobs.filter(j => {
+    if (q && !j.name.toLowerCase().includes(q)) return false;
+    if (currentFilter === 'all') return true;
+    if (currentFilter === 'stale') return j.enabled && j.lastRunAt && (Date.now() - j.lastRunAt > 86400000 * 2);
+    if (currentFilter === 'disabled') return !j.enabled;
+    return j.status === currentFilter;
+  });
+
+  filtered.sort((a, b) => {
+    let av = a[currentSort.key], bv = b[currentSort.key];
+    if (av == null) av = currentSort.asc ? Infinity : -Infinity;
+    if (bv == null) bv = currentSort.asc ? Infinity : -Infinity;
+    if (typeof av === 'string') return currentSort.asc ? av.localeCompare(bv) : bv.localeCompare(av);
+    return currentSort.asc ? av - bv : bv - av;
+  });
+
+  document.getElementById('tbody').innerHTML = filtered.map(j => {
+    const dotClass = j.status === 'failing' ? 'dot-failing' : `dot-${j.status}`;
+    const staleClass = j.lastRunAt && (Date.now() - j.lastRunAt > 86400000 * 2) ? 'very-stale' :
+                       j.lastRunAt && (Date.now() - j.lastRunAt > 86400000) ? 'stale' : '';
+    return `<tr>
+      <td><span class="status-dot ${dotClass}"></span>${j.status}</td>
+      <td><strong>${esc(j.name)}</strong>${j.lastError ? `<div class="error-text" title="${esc(j.lastError)}">${esc(j.lastError)}</div>` : ''}</td>
+      <td class="schedule">${esc(j.schedule)}</td>
+      <td><span class="badge badge-${j.sessionTarget}">${j.sessionTarget}</span></td>
+      <td class="time-ago ${staleClass}">${j.lastRunAt ? timeAgo(j.lastRunAt) : '—'}</td>
+      <td class="duration">${j.lastDuration ? formatDuration(j.lastDuration) : '—'}</td>
+      <td class="time-ago">${j.nextRunAt ? timeUntil(j.nextRunAt) : '—'}</td>
+      <td>${j.consecutiveErrors > 0 ? `<span style="color:var(--err);font-weight:700">${j.consecutiveErrors}</span>` : '<span style="color:var(--dim)">0</span>'}</td>
+    </tr>`;
+  }).join('');
+}
+
+function esc(s) { if(!s) return ''; const d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
+
+function timeAgo(ms) {
+  const diff = Date.now() - ms;
+  if (diff < 0) return 'just now';
+  if (diff < 60000) return `${Math.floor(diff/1000)}s ago`;
+  if (diff < 3600000) return `${Math.floor(diff/60000)}m ago`;
+  if (diff < 86400000) return `${Math.floor(diff/3600000)}h ago`;
+  return `${Math.floor(diff/86400000)}d ago`;
+}
+
+function timeUntil(ms) {
+  const diff = ms - Date.now();
+  if (diff < 0) return 'overdue';
+  if (diff < 60000) return `in ${Math.floor(diff/1000)}s`;
+  if (diff < 3600000) return `in ${Math.floor(diff/60000)}m`;
+  if (diff < 86400000) return `in ${Math.floor(diff/3600000)}h`;
+  return `in ${Math.floor(diff/86400000)}d`;
+}
+
+function formatDuration(ms) {
+  if (ms < 1000) return `${ms}ms`;
+  if (ms < 60000) return `${(ms/1000).toFixed(1)}s`;
+  return `${(ms/60000).toFixed(1)}m`;
+}
+
+// Auto-refresh every 5 min
+setInterval(loadData, 300000);
+</script>
+</body>
+</html>
