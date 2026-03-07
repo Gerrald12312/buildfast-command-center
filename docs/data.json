@@ -1,5 +1,5 @@
 {
-  "generated_at": 1772859763723,
+  "generated_at": 1772881363779,
   "total": 148,
   "jobs": [
     {
@@ -11,11 +11,11 @@
       "tz": "Asia/Bangkok",
       "sessionTarget": "isolated",
       "model": "anthropic/claude-sonnet-4-6",
-      "lastRunAt": 1772838160060,
-      "lastDuration": 6752,
+      "lastRunAt": 1772859760058,
+      "lastDuration": 7507,
       "lastStatus": "ok",
       "lastError": "",
-      "nextRunAt": 1772859760020,
+      "nextRunAt": 1772881360020,
       "consecutiveErrors": 0,
       "delivery": "none"
     },
@@ -28,11 +28,11 @@
       "tz": "UTC",
       "sessionTarget": "main",
       "model": "",
-      "lastRunAt": 1772838540040,
-      "lastDuration": 116054,
+      "lastRunAt": 1772860140047,
+      "lastDuration": 97585,
       "lastStatus": "ok",
       "lastError": "",
-      "nextRunAt": 1772860140000,
+      "nextRunAt": 1772881740000,
       "consecutiveErrors": 0,
       "delivery": "none"
     },
@@ -45,11 +45,11 @@
       "tz": "Asia/Bangkok",
       "sessionTarget": "isolated",
       "model": "anthropic/claude-sonnet-4-6",
-      "lastRunAt": 1772859678140,
-      "lastDuration": 10475,
+      "lastRunAt": 1772881200044,
+      "lastDuration": 5484,
       "lastStatus": "ok",
       "lastError": "",
-      "nextRunAt": 1772861400000,
+      "nextRunAt": 1772883000000,
       "consecutiveErrors": 0,
       "delivery": "none"
     },
@@ -949,9 +949,9 @@
       "lastRunAt": 1772859600024,
       "lastDuration": 78116,
       "lastStatus": "error",
-      "lastError": "\u26a0\ufe0f \u2709\ufe0f Message failed",
+      "lastError": "",
       "nextRunAt": 1772946000000,
-      "consecutiveErrors": 1,
+      "consecutiveErrors": 0,
       "delivery": "announce"
     },
     {
