@@ -1,5 +1,5 @@
 {
-  "generated_at": 1773291766678,
+  "generated_at": 1773313364112,
   "total": 151,
   "jobs": [
     {
@@ -11,11 +11,11 @@
       "tz": "Asia/Bangkok",
       "sessionTarget": "isolated",
       "model": "anthropic/claude-sonnet-4-6",
-      "lastRunAt": 1773270160058,
-      "lastDuration": 11978,
+      "lastRunAt": 1773291760060,
+      "lastDuration": 13304,
       "lastStatus": "ok",
       "lastError": "",
-      "nextRunAt": 1773291760020,
+      "nextRunAt": 1773313360020,
       "consecutiveErrors": 0,
       "delivery": "none"
     },
@@ -23,16 +23,16 @@
       "id": "ba60878d-7616-4784-944b-0c9dada900a2",
       "name": "Product Synthesis \u2014 All Products (Every 6h)",
       "enabled": true,
-      "status": "ok",
+      "status": "error",
       "schedule": "9 0,6,12,18 * * *",
       "tz": "UTC",
       "sessionTarget": "main",
       "model": "",
-      "lastRunAt": 1773270540037,
-      "lastDuration": 108074,
-      "lastStatus": "ok",
-      "lastError": "",
-      "nextRunAt": 1773292140000,
+      "lastRunAt": 1773300020047,
+      "lastDuration": 22797,
+      "lastStatus": "error",
+      "lastError": "fetch failed",
+      "nextRunAt": 1773313740000,
       "consecutiveErrors": 0,
       "delivery": "none"
     },
@@ -45,11 +45,11 @@
       "tz": "Asia/Bangkok",
       "sessionTarget": "isolated",
       "model": "anthropic/claude-sonnet-4-6",
-      "lastRunAt": 1773291687392,
-      "lastDuration": 7550,
+      "lastRunAt": 1773313200040,
+      "lastDuration": 8108,
       "lastStatus": "ok",
       "lastError": "",
-      "nextRunAt": 1773293400000,
+      "nextRunAt": 1773315000000,
       "consecutiveErrors": 0,
       "delivery": "none"
     },
@@ -62,11 +62,11 @@
       "tz": "UTC",
       "sessionTarget": "main",
       "model": "",
-      "lastRunAt": 1773287702249,
-      "lastDuration": 4263,
+      "lastRunAt": 1773309302388,
+      "lastDuration": 4826,
       "lastStatus": "ok",
       "lastError": "",
-      "nextRunAt": 1773294902249,
+      "nextRunAt": 1773316502388,
       "consecutiveErrors": 0,
       "delivery": "none"
     },
@@ -203,7 +203,7 @@
       "lastStatus": "error",
       "lastError": "\u26a0\ufe0f \u2709\ufe0f Message failed",
       "nextRunAt": 1773338400000,
-      "consecutiveErrors": 2,
+      "consecutiveErrors": 0,
       "delivery": "announce"
     },
     {
@@ -303,7 +303,7 @@
       "lastRunAt": 1773262800040,
       "lastDuration": 88943,
       "lastStatus": "skipped",
-      "lastError": "whatsapp-not-running",
+      "lastError": "",
       "nextRunAt": 1773349200000,
       "consecutiveErrors": 0,
       "delivery": "none"
@@ -407,7 +407,7 @@
       "lastStatus": "error",
       "lastError": "Error: upstream connect error or disconnect/reset before headers. reset reason: overflow",
       "nextRunAt": 1773352260000,
-      "consecutiveErrors": 2,
+      "consecutiveErrors": 0,
       "delivery": "announce"
     },
     {
@@ -458,7 +458,7 @@
       "lastStatus": "error",
       "lastError": "\u26a0\ufe0f \u2709\ufe0f Message failed",
       "nextRunAt": 1773355200000,
-      "consecutiveErrors": 2,
+      "consecutiveErrors": 0,
       "delivery": "announce"
     },
     {
@@ -907,17 +907,17 @@
       "id": "c6f6d657-3520-42de-b53f-30dd64fa7d66",
       "name": "LinkedIn Follow-Up System",
       "enabled": true,
-      "status": "error",
+      "status": "ok",
       "schedule": "10 9 * * *",
       "tz": "Asia/Bangkok",
       "sessionTarget": "isolated",
       "model": "anthropic/claude-sonnet-4-6",
-      "lastRunAt": 1773281164647,
-      "lastDuration": 600013,
-      "lastStatus": "error",
-      "lastError": "Error: cron: job execution timed out",
+      "lastRunAt": 1773291986569,
+      "lastDuration": 167721,
+      "lastStatus": "ok",
+      "lastError": "",
       "nextRunAt": 1773367800000,
-      "consecutiveErrors": 1,
+      "consecutiveErrors": 0,
       "delivery": "none"
     },
     {
@@ -941,17 +941,17 @@
       "id": "330c3136-804a-48e2-adfa-0f869fa96358",
       "name": "Daily Sales Call Review",
       "enabled": true,
-      "status": "error",
+      "status": "ok",
       "schedule": "30 9 * * *",
       "tz": "Asia/Bangkok",
       "sessionTarget": "isolated",
       "model": "anthropic/claude-sonnet-4-6",
-      "lastRunAt": 1773281764702,
-      "lastDuration": 900057,
-      "lastStatus": "error",
-      "lastError": "Error: cron: job execution timed out",
+      "lastRunAt": 1773292154290,
+      "lastDuration": 32562,
+      "lastStatus": "ok",
+      "lastError": "",
       "nextRunAt": 1773369000000,
-      "consecutiveErrors": 1,
+      "consecutiveErrors": 0,
       "delivery": "announce"
     },
     {
@@ -1002,7 +1002,7 @@
       "lastStatus": "error",
       "lastError": "\u26a0\ufe0f \u2709\ufe0f Message: `https://media.giphy.com/media/3o6fJbwYFe3SmVVQ4M/giphy-downsized.gif` failed",
       "nextRunAt": 1773374400000,
-      "consecutiveErrors": 2,
+      "consecutiveErrors": 0,
       "delivery": "announce"
     },
     {
@@ -1019,7 +1019,7 @@
       "lastStatus": "error",
       "lastError": "\u26a0\ufe0f \u2709\ufe0f Message failed",
       "nextRunAt": 1773378000000,
-      "consecutiveErrors": 1,
+      "consecutiveErrors": 0,
       "delivery": "announce"
     },
     {
