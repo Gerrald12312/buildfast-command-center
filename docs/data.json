@@ -1,5 +1,5 @@
 {
-  "generated_at": 1773983783245,
+  "generated_at": 1773984164441,
   "total": 153,
   "jobs": [
     {
@@ -11,8 +11,8 @@
       "tz": "Asia/Bangkok",
       "sessionTarget": "isolated",
       "model": "anthropic/claude-sonnet-4-6",
-      "lastRunAt": 1773962461686,
-      "lastDuration": 11399,
+      "lastRunAt": 1773983776100,
+      "lastDuration": 14064,
       "lastStatus": "ok",
       "lastError": "",
       "nextRunAt": 1773984160020,
